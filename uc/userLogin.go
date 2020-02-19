@@ -1,6 +1,6 @@
 package uc
 
-import "github.com/err0r500/go-realworld-clean/domain"
+import "github.com/saeidraei/go-jwt-auth/domain"
 
 func (i interactor) UserLogin(email, password string) (*domain.User, string, error) {
 	user, err := i.userRW.GetByEmailAndPassword(email, password)

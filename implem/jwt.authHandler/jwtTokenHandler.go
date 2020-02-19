@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/err0r500/go-realworld-clean/uc"
+	"github.com/saeidraei/go-jwt-auth/uc"
 )
 
 var tokenTimeToLive = time.Hour * 2

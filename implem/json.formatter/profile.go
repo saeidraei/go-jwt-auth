@@ -1,8 +1,10 @@
 package formatter
 
 import (
-	"github.com/err0r500/go-realworld-clean/domain"
+	"github.com/saeidraei/go-jwt-auth/domain"
 )
+
+const dateLayout = "2006-01-02T15:04:05.999Z"
 
 type Profile struct {
 	Username  string `json:"username"`

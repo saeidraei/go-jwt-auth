@@ -1,0 +1,32 @@
+version: '3'
+services:
+  # PHP Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+      - redis
+    ports:
+    - 8084:8080
+
+  # MySQL Service
+  db:
+    image: mysql:5.7.27
+    environment:
+      MYSQL_DATABASE: "clean"
+      MYSQL_ROOT_PASSWORD: "testpassword"
+      SERVICE_NAME: db_service
+      SERVICE_TAGS: 1.0
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  # Redis Service
+  redis:
+    image: redis:alpine
+
+# Volumes
+volumes:
+  dbdata:
+    driver: local

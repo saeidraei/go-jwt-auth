@@ -1,6 +1,6 @@
 package formatter
 
-import "github.com/err0r500/go-realworld-clean/domain"
+import "github.com/saeidraei/go-jwt-auth/domain"
 
 type UserResp struct {
 	Email     string `json:"email"`

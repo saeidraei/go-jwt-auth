@@ -3,8 +3,8 @@ package server
 import (
 	"net/http"
 
-	"github.com/err0r500/go-realworld-clean/implem/json.formatter"
 	"github.com/gin-gonic/gin"
+	"github.com/saeidraei/go-jwt-auth/implem/json.formatter"
 )
 
 type userPostRequest struct {

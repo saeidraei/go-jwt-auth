@@ -5,13 +5,13 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/err0r500/go-realworld-clean/implem/gin.server"
-	"github.com/err0r500/go-realworld-clean/implem/jwt.authHandler"
-	logger "github.com/err0r500/go-realworld-clean/implem/logrus.logger"
-	"github.com/err0r500/go-realworld-clean/implem/uc.mock"
-	"github.com/err0r500/go-realworld-clean/testData"
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
+	"github.com/saeidraei/go-jwt-auth/implem/gin.server"
+	"github.com/saeidraei/go-jwt-auth/implem/jwt.authHandler"
+	logger "github.com/saeidraei/go-jwt-auth/implem/logrus.logger"
+	"github.com/saeidraei/go-jwt-auth/implem/uc.mock"
+	"github.com/saeidraei/go-jwt-auth/testData"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/h2non/baloo.v3"
 )

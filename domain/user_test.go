@@ -3,8 +3,8 @@ package domain_test
 import (
 	"testing"
 
-	"github.com/err0r500/go-realworld-clean/domain"
-	"github.com/err0r500/go-realworld-clean/testData"
+	"github.com/saeidraei/go-jwt-auth/domain"
+	"github.com/saeidraei/go-jwt-auth/testData"
 	"github.com/stretchr/testify/assert"
 )
 

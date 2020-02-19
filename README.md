@@ -13,10 +13,10 @@ We've gone to great lengths to adhere to the go community styleguides & best pra
 For more information on how to this works with other frontends/backends, head over to the [RealWorld](https://github.com/gothinkster/realworld) repo.
 
 
-[![Build Status](https://travis-ci.org/err0r500/go-realworld-clean.svg?branch=master)](https://travis-ci.org/err0r500/go-realworld-clean)
-[![BCH compliance](https://bettercodehub.com/edge/badge/err0r500/go-realworld-clean?branch=master)](https://bettercodehub.com/)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/107e5849415b40f4ae9c235afecebf56)](https://www.codacy.com/app/Err0r500/go-realworld-clean?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=err0r500/go-realworld-clean&amp;utm_campaign=Badge_Grade)
-[![codecov](https://codecov.io/gh/err0r500/go-realworld-clean/branch/master/graph/badge.svg)](https://codecov.io/gh/err0r500/go-realworld-clean)
+[![Build Status](https://travis-ci.org/saeidraei/go-jwt-auth.svg?branch=master)](https://travis-ci.org/saeidraei/go-jwt-auth)
+[![BCH compliance](https://bettercodehub.com/edge/badge/saeidraei/go-jwt-auth?branch=master)](https://bettercodehub.com/)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/107e5849415b40f4ae9c235afecebf56)](https://www.codacy.com/app/saeidraei/go-jwt-auth?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=saeidraei/go-jwt-auth&amp;utm_campaign=Badge_Grade)
+[![codecov](https://codecov.io/gh/saeidraei/go-jwt-auth/branch/master/graph/badge.svg)](https://codecov.io/gh/saeidraei/go-jwt-auth)
 
 
 # How it works

@@ -1,6 +1,6 @@
 workspace:
   base: /go
-  path: src/github.com/err0r500/go-realworld-clean
+  path: src/github.com/saeidraei/go-jwt-auth
 
 pipeline:
   prerequisites:

@@ -5,8 +5,8 @@ package mock
 import (
 	"log"
 
-	"github.com/err0r500/go-realworld-clean/uc"
 	"github.com/golang/mock/gomock"
+	"github.com/saeidraei/go-jwt-auth/uc"
 )
 
 // Interactor : is used in order to update its properties accordingly to each test conditions

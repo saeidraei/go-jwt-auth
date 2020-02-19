@@ -1,37 +1,23 @@
-# Build Step
-FROM golang:latest AS build
+FROM golang:latest
 
-# Prerequisites and vendoring
-RUN mkdir -p $GOPATH/src/github.com/err0r500/go-realworld-clean
-ADD . $GOPATH/src/github.com/err0r500/go-realworld-clean
-WORKDIR $GOPATH/src/github.com/err0r500/go-realworld-clean
-RUN go get -u github.com/golang/dep/cmd/dep
-RUN dep ensure -vendor-only
+# Set the Current Working Directory inside the container
+WORKDIR /app
 
-# Build
-ARG build
-ARG version
-RUN CGO_ENABLED=0 go build -ldflags="-s -w -X main.Version=${version} -X main.Build=${build}" -o /go-realworld-clean
+# Copy go mod and sum files
+COPY go.mod go.sum ./
 
-# Final Step
-FROM alpine
+# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
+RUN go mod download
 
-# Base packages
-RUN apk update
-RUN apk upgrade
-RUN apk add ca-certificates && update-ca-certificates
-RUN apk add --update tzdata
-RUN rm -rf /var/cache/apk/*
+# Copy the source from the current directory to the Working Directory inside the container
+COPY . .
 
-# Copy binary from build step
-COPY --from=build /go-realworld-clean /home/
+# Build the Go app
+RUN go build -o main .
 
-# Define timezone
-ENV TZ=Europe/Paris
-
-# Define the ENTRYPOINT
-WORKDIR /home
-ENTRYPOINT ./go-realworld-clean
-
-# Document that the service listens on port 8080.
+# Expose port 8080 to the outside world
 EXPOSE 8080
+
+
+# Command to run the executable
+CMD ./main migrate && ./main

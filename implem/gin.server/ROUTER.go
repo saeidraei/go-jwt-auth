@@ -8,9 +8,9 @@ import (
 
 	"errors"
 
-	"github.com/err0r500/go-realworld-clean/uc"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/render"
+	"github.com/saeidraei/go-jwt-auth/uc"
 )
 
 type RouterHandler struct {
@@ -40,16 +40,12 @@ func (rH RouterHandler) SetRoutes(r *gin.Engine) {
 
 	rH.profileRoutes(api)
 	rH.usersRoutes(api)
-	rH.articlesRoutes(api)
 
-	api.GET("/tags", rH.tagsGet) //tags
 }
 
 func (rH RouterHandler) profileRoutes(api *gin.RouterGroup) {
 	profiles := api.Group("/profiles")
-	profiles.GET("/:username", rH.profileGet)                                        // Get a profile of a user of the system. Auth is optional
-	profiles.POST("/:username/follow", rH.jwtMiddleware(), rH.profileFollowPost)     // Follow a user by username
-	profiles.DELETE("/:username/follow", rH.jwtMiddleware(), rH.profileFollowDelete) // Unfollow a user by username
+	profiles.GET("/:username", rH.profileGet) // Get a profile of a user of the system. Auth is optional
 }
 
 func (rH RouterHandler) usersRoutes(api *gin.RouterGroup) {
@@ -61,31 +57,6 @@ func (rH RouterHandler) usersRoutes(api *gin.RouterGroup) {
 	user.GET("", rH.jwtMiddleware(), rH.userGet)     // Gets the currently logged-in user
 	user.PUT("", rH.jwtMiddleware(), rH.userPatch)   // WARNING : it's a in fact a PATCH request in the API contract !!!
 	user.PATCH("", rH.jwtMiddleware(), rH.userPatch) // just in case it's fixed one day....
-}
-
-func (rH RouterHandler) articlesRoutes(api *gin.RouterGroup) {
-	articles := api.Group("/articles")
-
-	articles.GET("", rH.articlesFilteredGet)
-	articles.POST("", rH.jwtMiddleware(), rH.articlePost)
-	articles.GET("/:slug", func(c *gin.Context) { // ugly api contract !
-		if c.Param("slug") == "feed" {
-			rH.jwtMiddleware()(c)
-			rH.articlesFeedGet(c)
-			return
-		}
-
-		rH.articleGet(c)
-	})
-
-	articles.PUT("/:slug", rH.jwtMiddleware(), rH.articlePut)
-	articles.DELETE("/:slug", rH.jwtMiddleware(), rH.articleDelete)
-	articles.POST("/:slug/favorite", rH.jwtMiddleware(), rH.updateFavorite)
-	articles.DELETE("/:slug/favorite", rH.jwtMiddleware(), rH.updateFavorite)
-
-	articles.GET("/:slug/comments", rH.commentsGet)
-	articles.POST("/:slug/comments", rH.jwtMiddleware(), rH.commentPost)
-	articles.DELETE("/:slug/comments/:id", rH.jwtMiddleware(), rH.commentDelete)
 }
 
 const userNameKey = "userNameKey"

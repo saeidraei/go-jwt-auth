@@ -2,19 +2,15 @@ package main
 
 import (
 	"fmt"
+	migrate "github.com/saeidraei/go-jwt-auth/db"
 
-	"github.com/err0r500/go-realworld-clean/implem/dummy.articleValidator"
-	"github.com/err0r500/go-realworld-clean/implem/gin.server"
-	"github.com/err0r500/go-realworld-clean/implem/gosimple.slugger"
-	"github.com/err0r500/go-realworld-clean/implem/jwt.authHandler"
-	"github.com/err0r500/go-realworld-clean/implem/logrus.logger"
-	"github.com/err0r500/go-realworld-clean/implem/memory.articleRW"
-	"github.com/err0r500/go-realworld-clean/implem/memory.commentRW"
-	"github.com/err0r500/go-realworld-clean/implem/memory.tagsRW"
-	"github.com/err0r500/go-realworld-clean/implem/memory.userRW"
-	"github.com/err0r500/go-realworld-clean/implem/user.validator"
-	"github.com/err0r500/go-realworld-clean/infra"
-	"github.com/err0r500/go-realworld-clean/uc"
+	"github.com/saeidraei/go-jwt-auth/implem/gin.server"
+	"github.com/saeidraei/go-jwt-auth/implem/jwt.authHandler"
+	"github.com/saeidraei/go-jwt-auth/implem/logrus.logger"
+	"github.com/saeidraei/go-jwt-auth/implem/memory.userRW"
+	"github.com/saeidraei/go-jwt-auth/implem/user.validator"
+	"github.com/saeidraei/go-jwt-auth/infra"
+	"github.com/saeidraei/go-jwt-auth/uc"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -42,6 +38,13 @@ var versionCmd = &cobra.Command{
 		fmt.Printf("Build: %s\nVersion: %s\n", Build, Version)
 	},
 }
+var migrationCmd = &cobra.Command{
+	Use:   "migrate",
+	Short: "Run the migration",
+	Run: func(cmd *cobra.Command, args []string) {
+		migrate.RunMigration()
+	},
+}
 
 func main() {
 	rootCmd.AddCommand(versionCmd)
@@ -50,6 +53,7 @@ func main() {
 	infra.LoggerConfig(rootCmd)
 	infra.ServerConfig(rootCmd)
 	infra.DatabaseConfig(rootCmd)
+	rootCmd.AddCommand(migrationCmd)
 
 	if err := rootCmd.Execute(); err != nil {
 		logrus.WithError(err).Fatal()
@@ -70,15 +74,10 @@ func run() {
 
 	server.NewRouterWithLogger(
 		uc.HandlerConstructor{
-			Logger:           routerLogger,
-			UserRW:           userRW.New(),
-			ArticleRW:        articleRW.New(),
-			UserValidator:    validator.New(),
-			AuthHandler:      authHandler,
-			Slugger:          slugger.New(),
-			ArticleValidator: articleValidator.New(),
-			TagsRW:           tagsRW.New(),
-			CommentRW:        commentRW.New(),
+			Logger:        routerLogger,
+			UserRW:        userRW.New(),
+			UserValidator: validator.New(),
+			AuthHandler:   authHandler,
 		}.New(),
 		authHandler,
 		routerLogger,

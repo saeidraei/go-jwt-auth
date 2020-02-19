@@ -3,7 +3,7 @@ package jwt_test
 import (
 	"testing"
 
-	"github.com/err0r500/go-realworld-clean/implem/jwt.authHandler"
+	"github.com/saeidraei/go-jwt-auth/implem/jwt.authHandler"
 	"github.com/stretchr/testify/assert"
 )
 

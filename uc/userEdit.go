@@ -1,7 +1,7 @@
 package uc
 
 import (
-	"github.com/err0r500/go-realworld-clean/domain"
+	"github.com/saeidraei/go-jwt-auth/domain"
 )
 
 //UserEdit(userName string, newUser map[UserUpdatableProperty]*string) (user *domain.User, err error)

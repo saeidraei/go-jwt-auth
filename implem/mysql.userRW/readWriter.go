@@ -1,36 +1,33 @@
 package userRW
 
 import (
+	"database/sql"
 	"errors"
-	"sync"
+	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 
 	"log"
 
 	"time"
 
 	"github.com/saeidraei/go-jwt-auth/domain"
-	"github.com/saeidraei/go-jwt-auth/testData"
 	"github.com/saeidraei/go-jwt-auth/uc"
 	"github.com/spf13/viper"
 )
 
 type rw struct {
-	store *sync.Map // map username:user
-	//TODO : ADD a password hasher here
+	db *sql.DB
 }
 
 func New() uc.UserRW {
-	rw := rw{
-		store: &sync.Map{},
+	db, err := sql.Open("mysql", viper.GetString("mysql.user")+":"+viper.GetString("mysql.password")+"@tcp("+viper.GetString("mysql.host")+":"+viper.GetString("mysql.port")+")/"+viper.GetString("mysql.database"))
+	if err != nil {
+		log.Println(err)
+		panic(err.Error())
 	}
-
-	if viper.GetBool("populate") {
-		log.Print("append user")
-		rick := testData.User("rick")
-		rw.Create(rick.Name, rick.Email, rick.Password)
+	return rw{
+		db: db,
 	}
-
-	return rw
 }
 
 func (rw rw) Create(username, email, password string) (*domain.User, error) {
@@ -38,15 +35,14 @@ func (rw rw) Create(username, email, password string) (*domain.User, error) {
 		return nil, uc.ErrAlreadyInUse
 	}
 
-	rw.store.Store(username, domain.User{
-		Name:      username,
-		Email:     email,
-		Password:  password,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-	})
+	ins, err := rw.db.Query("insert into url(ID,Address) values(?,?)", url.ID, url.Address)
+	if err != nil {
+		fmt.Println(err)
+		panic(err.Error())
+	}
+	defer ins.Close()
 
-	return rw.GetByName(username)
+	return rw.GetByName(url.ID)
 }
 
 func (rw rw) GetByName(userName string) (*domain.User, error) {

@@ -7,8 +7,8 @@ package mock
 import (
 	reflect "reflect"
 
-	domain "github.com/err0r500/go-realworld-clean/domain"
 	gomock "github.com/golang/mock/gomock"
+	domain "github.com/saeidraei/go-jwt-auth/domain"
 )
 
 // MockHandler is a mock of Handler interface

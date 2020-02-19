@@ -4,8 +4,8 @@ import (
 	"errors"
 
 	"github.com/asaskevich/govalidator"
-	"github.com/err0r500/go-realworld-clean/domain"
-	"github.com/err0r500/go-realworld-clean/uc"
+	"github.com/saeidraei/go-jwt-auth/domain"
+	"github.com/saeidraei/go-jwt-auth/uc"
 )
 
 type userValidator struct{}

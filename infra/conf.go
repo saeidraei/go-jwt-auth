@@ -38,6 +38,11 @@ func ServerConfig(cmd *cobra.Command) {
 
 func DatabaseConfig(cmd *cobra.Command) {
 	cmd.Flags().Bool("populate", false, "used to populate databases in order to run integration tests")
+	cmd.Flags().String("mysql.host", "db", "mysql host")
+	cmd.Flags().String("mysql.port", "3306", "mysql port")
+	cmd.Flags().String("mysql.user", "root", "mysql user")
+	cmd.Flags().String("mysql.password", "testpassword", "mysql user password")
+	cmd.Flags().String("mysql.database", "clean", "mysql database")
 
 	viper.BindPFlags(cmd.Flags())
 }

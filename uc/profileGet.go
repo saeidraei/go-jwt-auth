@@ -1,7 +1,7 @@
 package uc
 
 import (
-	"github.com/err0r500/go-realworld-clean/domain"
+	"github.com/saeidraei/go-jwt-auth/domain"
 )
 
 func (i interactor) ProfileGet(requestingUserName, userName string) (*domain.User, bool, error) {
@@ -17,7 +17,7 @@ func (i interactor) ProfileGet(requestingUserName, userName string) (*domain.Use
 		return user, false, nil
 	}
 
-	reqUser, err := i.userRW.GetByName(requestingUserName)
+	_, err = i.userRW.GetByName(requestingUserName)
 	if err != nil {
 		return nil, false, err
 	}
@@ -25,5 +25,5 @@ func (i interactor) ProfileGet(requestingUserName, userName string) (*domain.Use
 		return nil, false, errProfileNotFound
 	}
 
-	return user, reqUser.Follows(userName), nil
+	return user, false, nil
 }

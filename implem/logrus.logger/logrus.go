@@ -3,7 +3,7 @@ package logger
 import (
 	"log"
 
-	"github.com/err0r500/go-realworld-clean/uc"
+	"github.com/saeidraei/go-jwt-auth/uc"
 	"github.com/sirupsen/logrus"
 )
 
