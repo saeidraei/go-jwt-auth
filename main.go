@@ -7,7 +7,7 @@ import (
 	"github.com/saeidraei/go-jwt-auth/implem/gin.server"
 	"github.com/saeidraei/go-jwt-auth/implem/jwt.authHandler"
 	"github.com/saeidraei/go-jwt-auth/implem/logrus.logger"
-	"github.com/saeidraei/go-jwt-auth/implem/mysql.userRW"
+	"github.com/saeidraei/go-jwt-auth/implem/mongo.userRW"
 	"github.com/saeidraei/go-jwt-auth/implem/user.validator"
 	"github.com/saeidraei/go-jwt-auth/infra"
 	"github.com/saeidraei/go-jwt-auth/uc"

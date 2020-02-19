@@ -8,6 +8,7 @@ services:
     depends_on:
       - db
       - redis
+      - mongo
     ports:
     - 8084:8080
 
@@ -25,6 +26,14 @@ services:
   # Redis Service
   redis:
     image: redis:alpine
+
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: testpassword
+      MONGO_INITDB_DATABASE: clean
+
 
 # Volumes
 volumes:
