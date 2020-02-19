@@ -7,7 +7,7 @@ import (
 	"github.com/saeidraei/go-jwt-auth/implem/gin.server"
 	"github.com/saeidraei/go-jwt-auth/implem/jwt.authHandler"
 	"github.com/saeidraei/go-jwt-auth/implem/logrus.logger"
-	"github.com/saeidraei/go-jwt-auth/implem/memory.userRW"
+	"github.com/saeidraei/go-jwt-auth/implem/mysql.userRW"
 	"github.com/saeidraei/go-jwt-auth/implem/user.validator"
 	"github.com/saeidraei/go-jwt-auth/infra"
 	"github.com/saeidraei/go-jwt-auth/uc"
@@ -48,12 +48,12 @@ var migrationCmd = &cobra.Command{
 
 func main() {
 	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(migrationCmd)
 	cobra.OnInitialize(infra.CobraInitialization)
 
 	infra.LoggerConfig(rootCmd)
 	infra.ServerConfig(rootCmd)
 	infra.DatabaseConfig(rootCmd)
-	rootCmd.AddCommand(migrationCmd)
 
 	if err := rootCmd.Execute(); err != nil {
 		logrus.WithError(err).Fatal()

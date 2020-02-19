@@ -2,13 +2,9 @@ package userRW
 
 import (
 	"database/sql"
-	"errors"
-	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 
 	"log"
-
-	"time"
 
 	"github.com/saeidraei/go-jwt-auth/domain"
 	"github.com/saeidraei/go-jwt-auth/uc"
@@ -34,26 +30,31 @@ func (rw rw) Create(username, email, password string) (*domain.User, error) {
 	if _, err := rw.GetByName(username); err == nil {
 		return nil, uc.ErrAlreadyInUse
 	}
-
-	ins, err := rw.db.Query("insert into url(ID,Address) values(?,?)", url.ID, url.Address)
+	ins, err := rw.db.Query("insert into users(`Name`,Email,Password) values(?,?,?)", username, email, password)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		panic(err.Error())
 	}
 	defer ins.Close()
 
-	return rw.GetByName(url.ID)
+	return rw.GetByName(username)
 }
 
 func (rw rw) GetByName(userName string) (*domain.User, error) {
-	value, ok := rw.store.Load(userName)
-	if !ok {
-		return nil, uc.ErrNotFound
-	}
-
-	user, ok := value.(domain.User)
-	if !ok {
-		return nil, errors.New("not a user stored at key")
+	//value, ok := rw.store.Load(userName)
+	//if !ok {
+	//	return nil, uc.ErrNotFound
+	//}
+	//
+	//user, ok := value.(domain.User)
+	//if !ok {
+	//	return nil, errors.New("not a user stored at key")
+	//}
+	var user domain.User
+	err := rw.db.QueryRow("select `Name`,Email,Password from users where `NAME` =? ", userName).Scan(&user.Name, &user.Email, &user.Password)
+	if err != nil {
+		log.Println(err)
+		return nil, err
 	}
 
 	return &user, nil
@@ -61,33 +62,23 @@ func (rw rw) GetByName(userName string) (*domain.User, error) {
 
 func (rw rw) GetByEmailAndPassword(email, password string) (*domain.User, error) {
 	var err error
-	var foundUser domain.User
+	var user domain.User
+	err = rw.db.QueryRow("select `Name`,Email,Password from users where `Email` =? and `Password` =? ", email, password).Scan(&user.Name, &user.Email, &user.Password)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
 
-	rw.store.Range(func(key, value interface{}) bool {
-		user, ok := value.(domain.User)
-		if !ok {
-			err = errors.New("failed to assert to domain.User")
-			return false
-		}
-
-		if user.Email == email && user.Password == password {
-			foundUser = user
-			return false // stop range
-		}
-
-		return true // keep iterating
-	})
-
-	return &foundUser, err
+	return &user, nil
 }
 
 func (rw rw) Save(user domain.User) error {
-	if user, _ := rw.GetByName(user.Name); user == nil {
-		return uc.ErrNotFound
-	}
-
-	user.UpdatedAt = time.Now()
-	rw.store.Store(user.Name, user)
+	//if user, _ := rw.GetByName(user.Name); user == nil {
+	//	return uc.ErrNotFound
+	//}
+	//
+	//user.UpdatedAt = time.Now()
+	//rw.store.Store(user.Name, user)
 
 	return nil
 }

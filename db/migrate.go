@@ -15,7 +15,7 @@ func RunMigration() {
 	fmt.Println("running migrations")
 	db, err := sql.Open("mysql", viper.GetString("mysql.user")+":"+viper.GetString("mysql.password")+"@tcp("+viper.GetString("mysql.host")+":"+viper.GetString("mysql.port")+")/"+viper.GetString("mysql.database"))
 	if err != nil {
-		panic(err)
+		//panic(err)
 	}
 	driver, _ := mysql.WithInstance(db, &mysql.Config{})
 	m, err := migrate.NewWithDatabaseInstance(
@@ -27,8 +27,8 @@ func RunMigration() {
 		fmt.Println(err)
 	}
 
-	err = m.Steps(2)
+	err = m.Steps(1)
 	if err != nil {
-		panic(err.Error())
+		//panic(err)
 	}
 }
