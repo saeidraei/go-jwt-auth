@@ -3,7 +3,7 @@ users data can be stored in mysql and mongodb.By default we are using mongodb fo
 ###how to run using docker-compose:
 all you need to do is run `docker-compose up` in project root directory and after some time that images are pulled and some of them are build , project is up and running.
 
-you can use the [postman docs](https://documenter.getpostman.com/view/3010056/SzKTvyo2?version=latest) to explore the api.
+you can use the [postman docs](https://documenter.getpostman.com/view/3010056/SzKTvysW?version=latest) to explore the api.
 
 ### How tables are being created in mysql?
 we are using http://github.com/golang-migrate/migrate for handling migrations. in app's container migrations are being run every time it starts running.
