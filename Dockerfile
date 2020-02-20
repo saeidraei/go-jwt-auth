@@ -20,4 +20,4 @@ EXPOSE 8080
 
 
 # Command to run the executable
-CMD ./main migrate && ./main
+CMD ./wait-for-it.sh db:3306 -- ./main migrate && ./main
