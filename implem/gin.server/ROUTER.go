@@ -9,7 +9,6 @@ import (
 	"errors"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/render"
 	"github.com/saeidraei/go-jwt-auth/uc"
 )
 
@@ -38,14 +37,8 @@ func (rH RouterHandler) SetRoutes(r *gin.Engine) {
 	api := r.Group("/api")
 	api.Use(rH.errorCatcher())
 
-	rH.profileRoutes(api)
 	rH.usersRoutes(api)
 
-}
-
-func (rH RouterHandler) profileRoutes(api *gin.RouterGroup) {
-	profiles := api.Group("/profiles")
-	profiles.GET("/:username", rH.profileGet) // Get a profile of a user of the system. Auth is optional
 }
 
 func (rH RouterHandler) usersRoutes(api *gin.RouterGroup) {
@@ -54,9 +47,7 @@ func (rH RouterHandler) usersRoutes(api *gin.RouterGroup) {
 	users.POST("/login", rH.userLoginPost) // Login for existing user
 
 	user := api.Group("/user")
-	user.GET("", rH.jwtMiddleware(), rH.userGet)     // Gets the currently logged-in user
-	user.PUT("", rH.jwtMiddleware(), rH.userPatch)   // WARNING : it's a in fact a PATCH request in the API contract !!!
-	user.PATCH("", rH.jwtMiddleware(), rH.userPatch) // just in case it's fixed one day....
+	user.GET("", rH.jwtMiddleware(), rH.userGet) // Gets the currently logged-in user
 }
 
 const userNameKey = "userNameKey"
@@ -108,13 +99,12 @@ func (rH RouterHandler) errorCatcher() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Next()
 		if c.Writer.Status() > 399 {
-			c.Render(
-				c.Writer.Status(),
-				render.Data{
-					ContentType: "application/json; charset=utf-8",
-					Data:        []byte(`{"errors": {"body": ["wooops, something went wrong !"]}}`),
-				},
-			)
+			rb := c.Errors.JSON()
+			//if there was no error message show this message
+			if c.Errors == nil {
+				rb = gin.H{"error": "something went wrong"}
+			}
+			c.JSON(c.Writer.Status(), rb)
 		}
 	}
 }

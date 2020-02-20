@@ -26,6 +26,7 @@ type AuthHandler interface {
 type UserRW interface {
 	Create(username, email, password string) (*domain.User, error)
 	GetByName(userName string) (*domain.User, error)
+	GetByEmail(email string) (*domain.User, error)
 	GetByEmailAndPassword(email, password string) (*domain.User, error)
 	Save(user domain.User) error
 }

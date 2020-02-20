@@ -3,7 +3,6 @@ package userRW
 import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-
 	"log"
 
 	"github.com/saeidraei/go-jwt-auth/domain"
@@ -37,7 +36,7 @@ func (rw rw) Create(username, email, password string) (*domain.User, error) {
 	}
 	defer ins.Close()
 
-	return rw.GetByName(username)
+	return rw.GetByEmail(email)
 }
 
 func (rw rw) GetByName(userName string) (*domain.User, error) {
@@ -52,6 +51,17 @@ func (rw rw) GetByName(userName string) (*domain.User, error) {
 	//}
 	var user domain.User
 	err := rw.db.QueryRow("select `Name`,Email,Password from users where `NAME` =? ", userName).Scan(&user.Name, &user.Email, &user.Password)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+func (rw rw) GetByEmail(email string) (*domain.User, error) {
+	var user domain.User
+	err := rw.db.QueryRow("select `Name`,Email,Password from users where `Email` =? ", email).Scan(&user.Name, &user.Email, &user.Password)
 	if err != nil {
 		log.Println(err)
 		return nil, err

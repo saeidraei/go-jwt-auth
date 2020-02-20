@@ -7,19 +7,13 @@ import (
 )
 
 type Handler interface {
-	ProfileLogic
 	UserLogic
-}
-
-type ProfileLogic interface {
-	ProfileGet(requestingUserName, userName string) (profile *domain.User, follows bool, err error)
 }
 
 type UserLogic interface {
 	UserCreate(username, email, password string) (user *domain.User, token string, err error)
 	UserLogin(email, password string) (user *domain.User, token string, err error)
 	UserGet(userName string) (user *domain.User, token string, err error)
-	UserEdit(userName string, fieldsToUpdate map[domain.UserUpdatableProperty]*string) (user *domain.User, token string, err error)
 }
 
 type TagsLogic interface {

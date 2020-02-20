@@ -34,27 +34,18 @@ func New() uc.UserRW {
 }
 
 func (rw rw) Create(username, email, password string) (*domain.User, error) {
-	if _, err := rw.GetByName(username); err == nil {
+	if _, err := rw.GetByEmail(email); err == nil {
 		return nil, uc.ErrAlreadyInUse
 	}
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	_, err := rw.collection.InsertOne(ctx, bson.M{"Name": username, "Email": email, "password": password})
+	_, err := rw.collection.InsertOne(ctx, bson.M{"Name": username, "Email": email, "Password": password})
 	if err != nil {
 		panic(err)
 	}
-	return rw.GetByName(username)
+	return rw.GetByEmail(email)
 }
 
 func (rw rw) GetByName(userName string) (*domain.User, error) {
-	//value, ok := rw.store.Load(userName)
-	//if !ok {
-	//	return nil, uc.ErrNotFound
-	//}
-	//
-	//user, ok := value.(domain.User)
-	//if !ok {
-	//	return nil, errors.New("not a user stored at key")
-	//}
 	var user domain.User
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	res := rw.collection.FindOne(ctx, bson.M{"Name": userName})
@@ -66,10 +57,22 @@ func (rw rw) GetByName(userName string) (*domain.User, error) {
 	return &user, nil
 }
 
+func (rw rw) GetByEmail(email string) (*domain.User, error) {
+	var user domain.User
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	res := rw.collection.FindOne(ctx, bson.M{"Email": email})
+	err := res.Decode(&user)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
 func (rw rw) GetByEmailAndPassword(email, password string) (*domain.User, error) {
 	var user domain.User
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	res := rw.collection.FindOne(ctx, bson.M{"Email": email, "password": password})
+	res := rw.collection.FindOne(ctx, bson.M{"Email": email, "Password": password})
 	err := res.Decode(&user)
 	if err != nil {
 		return nil, err
