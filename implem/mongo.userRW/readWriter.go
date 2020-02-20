@@ -2,6 +2,8 @@ package userRW
 
 import (
 	"context"
+	"fmt"
+	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/bson"
 	"log"
 	"time"
@@ -19,7 +21,11 @@ type rw struct {
 }
 
 func New() uc.UserRW {
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://root:testpassword@mongo:27017"))
+	client, err := mongo.NewClient(options.Client().ApplyURI(fmt.Sprintf("mongodb://%s:%s@%s:%s",
+		viper.GetString("mongo.user"),
+		viper.GetString("mongo.password"),
+		viper.GetString("mongo.host"),
+		viper.GetString("mongo.port"))))
 	if err != nil {
 		log.Println(err)
 		panic(err.Error())

@@ -44,6 +44,11 @@ func DatabaseConfig(cmd *cobra.Command) {
 	cmd.Flags().String("mysql.user", "root", "mysql user")
 	cmd.Flags().String("mysql.password", "testpassword", "mysql user password")
 	cmd.Flags().String("mysql.database", "clean", "mysql database")
+	cmd.Flags().String("mongo.host", "mongo", "mongodb host")
+	cmd.Flags().String("mongo.port", "27017", "mongodb port")
+	cmd.Flags().String("mongo.user", "root", "mongodb user")
+	cmd.Flags().String("mongo.password", "testpassword", "mongodb password")
+	cmd.Flags().String("mongo.database", "clean", "mongodb database")
 
 	viper.BindPFlags(cmd.Flags())
 }
