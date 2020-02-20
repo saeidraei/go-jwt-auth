@@ -10,7 +10,7 @@ func (i interactor) UserCreate(username, email, password string) (*domain.User, 
 		return nil, "", err
 	}
 
-	token, err := i.authHandler.GenUserToken(username)
+	token, err := i.authHandler.GenUserToken(email)
 	if err != nil {
 		return nil, "", err
 	}

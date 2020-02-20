@@ -21,6 +21,7 @@ func (rH RouterHandler) userPost(c *gin.Context) {
 	body := &userPostRequest{}
 	if err := c.BindJSON(body); err != nil {
 		log(err)
+		c.Errors = append(c.Errors, &gin.Error{Err: err, Type: gin.ErrorTypePublic})
 		c.Status(http.StatusUnprocessableEntity)
 		return
 	}
@@ -28,6 +29,7 @@ func (rH RouterHandler) userPost(c *gin.Context) {
 	user, token, err := rH.ucHandler.UserCreate(body.User.Username, body.User.Email, body.User.Password)
 	if err != nil {
 		log(err)
+		c.Errors = append(c.Errors, &gin.Error{Err: err, Type: gin.ErrorTypePublic})
 		c.Status(http.StatusUnprocessableEntity)
 		return
 	}

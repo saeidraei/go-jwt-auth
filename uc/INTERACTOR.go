@@ -19,8 +19,8 @@ type Logger interface {
 }
 
 type AuthHandler interface {
-	GenUserToken(userName string) (token string, err error)
-	GetUserName(token string) (userName string, err error)
+	GenUserToken(email string) (token string, err error)
+	GetUserName(token string) (email string, err error)
 }
 
 type UserRW interface {

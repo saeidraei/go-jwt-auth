@@ -22,17 +22,17 @@ func New(salt string) uc.AuthHandler {
 }
 
 //GenToken (uc.Admin) : returns a signed token for an admin
-func (tH tokenHandler) GenUserToken(userName string) (string, error) {
-	if userName == "" {
+func (tH tokenHandler) GenUserToken(email string) (string, error) {
+	if email == "" {
 		return "", errors.New("can't generate token for empty user")
 	}
 
 	return jwt.
-		NewWithClaims(jwt.SigningMethodHS256, newUserClaims(userName, tokenTimeToLive)).
+		NewWithClaims(jwt.SigningMethodHS256, newUserClaims(email, tokenTimeToLive)).
 		SignedString(tH.salt)
 }
 
-func (tH tokenHandler) GetUserName(inToken string) (userName string, err error) {
+func (tH tokenHandler) GetUserName(inToken string) (email string, err error) {
 	token, err := jwt.ParseWithClaims(
 		inToken,
 		&userClaims{},

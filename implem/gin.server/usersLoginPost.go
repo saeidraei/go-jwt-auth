@@ -1,6 +1,7 @@
 package server
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -20,6 +21,7 @@ func (rH RouterHandler) userLoginPost(c *gin.Context) {
 	body := &userLoginPostBody{}
 	if err := c.BindJSON(body); err != nil {
 		log(err)
+		c.Errors = append(c.Errors, &gin.Error{Err: errors.New("please provide email and password"), Type: gin.ErrorTypePrivate})
 		c.Status(http.StatusUnprocessableEntity)
 		return
 	}
@@ -27,6 +29,7 @@ func (rH RouterHandler) userLoginPost(c *gin.Context) {
 	user, token, err := rH.ucHandler.UserLogin(body.User.Email, body.User.Password)
 	if err != nil {
 		log(err)
+		c.Errors = append(c.Errors, &gin.Error{Err: errors.New("wrong username and password"), Type: gin.ErrorTypePrivate})
 		c.Status(http.StatusUnprocessableEntity)
 		return
 	}
