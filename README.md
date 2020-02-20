@@ -1,74 +1,17 @@
-# ![RealWorld Example App](https://github.com/gothinkster/realworld-starter-kit/raw/master/logo.png)
+# JWT Auth Example in golang using clean architecture
+users data can be stored in mysql and mongodb.By default we are using mongodb for storing user data you can set the `server.userDriver` flag to `mysql` in order to change it to mysql.
+###how to run using docker-compose:
+all you need to do is run `docker-compose up` in project root directory and after some time that images are pulled and some of them are build , project is up and running.
 
-> ### Golang clean-architecture codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) spec and API.
+you can use the [postman docs](https://documenter.getpostman.com/view/3010056/SzKTvyo2?version=latest) to explore the api.
 
+### How tables are being created in mysql?
+we are using http://github.com/golang-migrate/migrate for handling migrations. in app's container migrations are being run every time it starts running.
+if you are not using docker you can run the `migrate` command to run migrations.
 
-### [Demo](https://github.com/gothinkster/realworld)&nbsp;&nbsp;&nbsp;&nbsp;[RealWorld](https://github.com/gothinkster/realworld)
-
-
-This codebase was created to demonstrate a fully fledged fullstack application built with  go including CRUD operations, authentication, routing, pagination, and more.
-
-We've gone to great lengths to adhere to the go community styleguides & best practices.
-
-For more information on how to this works with other frontends/backends, head over to the [RealWorld](https://github.com/gothinkster/realworld) repo.
-
-
-[![Build Status](https://travis-ci.org/saeidraei/go-jwt-auth.svg?branch=master)](https://travis-ci.org/saeidraei/go-jwt-auth)
-[![BCH compliance](https://bettercodehub.com/edge/badge/saeidraei/go-jwt-auth?branch=master)](https://bettercodehub.com/)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/107e5849415b40f4ae9c235afecebf56)](https://www.codacy.com/app/saeidraei/go-jwt-auth?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=saeidraei/go-jwt-auth&amp;utm_campaign=Badge_Grade)
-[![codecov](https://codecov.io/gh/saeidraei/go-jwt-auth/branch/master/graph/badge.svg)](https://codecov.io/gh/saeidraei/go-jwt-auth)
-
-
-# How it works
-
-## Clean Architecture :
+### Clean Architecture :
 Layers ( from the most abstract to the most concrete ) :
 - domain : abstract data structures
 - uc : "use cases", the pure business logic
 - implem : implementations of the interfaces used in the business logic (uc layer)
 - infra : setup/configuration of the implementation
-
-#### Golden rules : 
-- a layer never imports something from a layer below it
-- 3rd-party libraries are forbidden in the 2 topmost layers
-
-#### Benefits :
-- flexibility
-- testability
-
-# Getting started
-### Build the app 
-```
-make
-```
-### Run the app
-```bash
-./go-realworld-clean
-```
-
-### Run the integration tests
-Start the server with an existing user
-```
-./go-realworld-clean --populate=true
-```
-
-In another terminal, run the tests against the API
-```
-newman run api/Conduit.postman_collection.json \
-  -e api/Conduit.postman_integration_test_environment.json \
-  --global-var "EMAIL=joe@what.com" \
-  --global-var "PASSWORD=password"
-```
-# Additional
-## Make Targets
-
-The version is either `0.1.0` if no tag has ever been defined or the latest
-tag defined. The build number is the SHA1 of the latest commit.
-
-- **make**: Builds and injects version/build in binary
-- **make init**: Sets the pre-commit hook in the repository
-- **make docker**: Build docker image and tag it with both `latest` and version
-- **make latest**: Build docker image and tag it only with `latest`
-- **make test**: Executes the test suite
-- **make mock**: Generate the necessary mocks
-- **make clean**: Removes the built binary if present
