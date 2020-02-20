@@ -7,7 +7,8 @@ import (
 	"github.com/saeidraei/go-jwt-auth/implem/gin.server"
 	"github.com/saeidraei/go-jwt-auth/implem/jwt.authHandler"
 	"github.com/saeidraei/go-jwt-auth/implem/logrus.logger"
-	"github.com/saeidraei/go-jwt-auth/implem/mysql.userRW"
+	mongoUserRW "github.com/saeidraei/go-jwt-auth/implem/mongo.userRW"
+	mysqlUserRW "github.com/saeidraei/go-jwt-auth/implem/mysql.userRW"
 	"github.com/saeidraei/go-jwt-auth/implem/user.validator"
 	"github.com/saeidraei/go-jwt-auth/infra"
 	"github.com/saeidraei/go-jwt-auth/uc"
@@ -71,11 +72,17 @@ func run() {
 		viper.GetString("log.level"),
 		viper.GetString("log.format"),
 	)
+	var userRW uc.UserRW
+	if viper.GetString("server.userDriver") == "mysql" {
+		userRW = mysqlUserRW.New()
+	} else {
+		userRW = mongoUserRW.New()
 
+	}
 	server.NewRouterWithLogger(
 		uc.HandlerConstructor{
 			Logger:        routerLogger,
-			UserRW:        userRW.New(),
+			UserRW:        userRW,
 			UserValidator: validator.New(),
 			AuthHandler:   authHandler,
 		}.New(),

@@ -26,7 +26,7 @@ func New() uc.UserRW {
 }
 
 func (rw rw) Create(username, email, password string) (*domain.User, error) {
-	if _, err := rw.GetByName(username); err == nil {
+	if _, err := rw.GetByEmail(username); err == nil {
 		return nil, uc.ErrAlreadyInUse
 	}
 	ins, err := rw.db.Query("insert into users(`Name`,Email,Password) values(?,?,?)", username, email, password)
